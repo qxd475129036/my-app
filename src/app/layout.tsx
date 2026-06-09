@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppSessionProvider } from "./components/SessionProvider";
@@ -33,7 +34,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <AppSessionProvider>
-          <LayoutClient>{children}</LayoutClient>
+          <Suspense fallback={null}>
+            <LayoutClient>{children}</LayoutClient>
+          </Suspense>
         </AppSessionProvider>
       </body>
     </html>

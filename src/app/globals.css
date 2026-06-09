@@ -2,26 +2,76 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================
+   Environment Theme System
+   Switched via html[data-env="local|dev|stg|prd"]
+   Default (no data-env) = local
+   ============================================ */
+
 :root {
   --background: #ffffff;
   --foreground: #1e293b;
   --card: #f8fafc;
   --card-border: #e2e8f0;
   --muted: #64748b;
-  --accent: #2563eb;
-  --accent-light: #eff6ff;
-  --accent-hover: #1d4ed8;
   --danger: #dc2626;
   --success: #16a34a;
   --warning: #d97706;
-  --sidebar-bg: #1e293b;
   --sidebar-text: #cbd5e1;
-  --sidebar-active: #2563eb;
   --border: #e2e8f0;
   --radius: 8px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+
+  /* Default: local (green) */
+  --accent: #16a34a;
+  --accent-light: #f0fdf4;
+  --accent-hover: #15803d;
+  --sidebar-bg: #1e293b;
+  --sidebar-active: #16a34a;
+  --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
+  --env-name: "local";
+}
+
+/* ---- local (green) ---- */
+html[data-env="local"] {
+  --accent: #16a34a;
+  --accent-light: #f0fdf4;
+  --accent-hover: #15803d;
+  --sidebar-active: #16a34a;
+  --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
+  --env-name: "local";
+}
+
+/* ---- dev (yellow/amber) ---- */
+html[data-env="dev"] {
+  --accent: #d97706;
+  --accent-light: #fffbeb;
+  --accent-hover: #b45309;
+  --sidebar-active: #d97706;
+  --env-gradient: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+  --env-name: "dev";
+}
+
+/* ---- stg (purple) ---- */
+html[data-env="stg"] {
+  --accent: #7c3aed;
+  --accent-light: #f5f3ff;
+  --accent-hover: #6d28d9;
+  --sidebar-active: #7c3aed;
+  --env-gradient: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  --env-name: "stg";
+}
+
+/* ---- prd (light blue) ---- */
+html[data-env="prd"] {
+  --accent: #0284c7;
+  --accent-light: #f0f9ff;
+  --accent-hover: #0369a1;
+  --sidebar-active: #0284c7;
+  --env-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  --env-name: "prd";
 }
 
 @theme inline {
