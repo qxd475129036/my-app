@@ -130,3 +130,16 @@ CSS `display: grid` based layout with `@tanstack/react-virtual`. Styling is kept
 | — | Row hover: `hover:bg-blue-100/40` |
 | — | Selected row: `bg-blue-50/70` |
 | — | Page size > 10 triggers vertical scroll (`maxHeight: 480px`) with sticky header |
+
+
+---
+
+## Performance Optimizations
+
+The DataTable includes several optimizations for handling large datasets (10,000+ rows):
+
+- **Auto-virtualization**: When `data.length` exceeds `virtualizeThreshold` (default 200), `@tanstack/react-virtual` is enabled automatically. Only visible rows are rendered into the DOM, using CSS `transform` positioning with grid layout.
+  - Explicit control: pass `virtualize={true}` to always enable, `virtualize={false}` to always disable.
+  - Configurable via `virtualizeOptions`: `estimateSize` (row height), `overscan` (extra rows), `containerHeight`.
+- **Deferred rendering**: Uses React's `useDeferredValue` to keep the UI responsive during heavy table processing (sort, filter, pagination changes). A loading overlay (spinner + "読み込み中...") appears automatically when data is being processed.
+- **Loading state**: The `loading` prop shows a loading overlay when true. Combined with deferred rendering, the overlay also appears during internal processing transitions.

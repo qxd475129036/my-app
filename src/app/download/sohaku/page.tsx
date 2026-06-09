@@ -33,8 +33,8 @@ const statuses = ["配送待", "配送中", "配送済", "配送失敗"];
 const generateData = (): SohakuRecord[] => {
   const records: SohakuRecord[] = [];
   for (let i = 1; i <= 300; i++) {
-    const qty = Math.floor(Math.random() * 50) + 5;
-    const unit = (Math.floor(Math.random() * 3000) + 300) * 10;
+    const qty = ((i * 23 + 7) % 50) + 5;
+    const unit = (((i * 67 + 200) % 3000) + 300) * 10;
     records.push({
       id: `SH${String(i).padStart(5, "0")}`,
       orderNo: `ORD${String(i).padStart(7, "0")}`,

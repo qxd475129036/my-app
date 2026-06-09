@@ -33,8 +33,8 @@ const statuses: RefundRecord["status"][] = ["申請中", "審査中", "承認済
 const generateData = (): RefundRecord[] => {
   const records: RefundRecord[] = [];
   for (let i = 1; i <= 150; i++) {
-    const qty = Math.floor(Math.random() * 10) + 1;
-    const unit = (Math.floor(Math.random() * 5000) + 500) * 10;
+    const qty = ((i * 17 + 3) % 10) + 1;
+    const unit = (((i * 73 + 500) % 5000) + 500) * 10;
     records.push({
       id: `RF${String(i).padStart(5, "0")}`,
       refundNo: `RFN${String(i).padStart(7, "0")}`,

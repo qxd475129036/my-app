@@ -3,7 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface NavItem {
   name: string;
@@ -72,6 +72,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     new Set(["Master管理", "请求业务", "代引业务", "退款业务", "明细下载"])
   );
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isActive = (href?: string) => {
     if (!href) return false;
@@ -212,7 +218,17 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* User info */}
       <div className="border-t border-white/10 p-4">
-        {session?.user ? (
+        {!mounted ? (
+          <div className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-full bg-white/10 animate-pulse flex-shrink-0" />
+            {!collapsed && (
+              <div className="flex-1 space-y-1.5">
+                <div className="h-3 w-20 rounded bg-white/10 animate-pulse" />
+                <div className="h-2 w-14 rounded bg-white/10 animate-pulse" />
+              </div>
+            )}
+          </div>
+        ) : session?.user ? (
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white flex-shrink-0">
               {session.user.name?.charAt(0)?.toUpperCase() || "U"}
@@ -232,17 +248,10 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             )}
           </div>
         ) : (
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-white/10 animate-pulse flex-shrink-0" />
-            {!collapsed && (
-              <div className="flex-1 space-y-1.5">
-                <div className="h-3 w-20 rounded bg-white/10 animate-pulse" />
-                <div className="h-2 w-14 rounded bg-white/10 animate-pulse" />
-              </div>
-            )}
-          </div>
+          <div className="h-8 w-8 rounded-full bg-white/10 flex-shrink-0" />
         )}
       </div>
     </aside>
   );
 }
+

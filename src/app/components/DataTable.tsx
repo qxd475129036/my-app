@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useState, useCallback, useRef } from "react";
+import { Fragment, useMemo, useState, useCallback, useRef, useDeferredValue } from "react";
 import { Pagination } from "./Pagination";
 
 import {
@@ -63,6 +63,8 @@ export interface DataTableProps<T> {
   virtualize?: boolean;
   /** Options for virtualized mode. */
   virtualizeOptions?: VirtualizeOptions;
+  /** Auto-enable virtualization when visible rows exceed this count. Default 200. */
+  virtualizeThreshold?: number;
 }
 
 const SORT_NONE_ICON = (
@@ -101,6 +103,7 @@ export function DataTable<T>({
   wrapHeaders = false,
   virtualize = false,
   virtualizeOptions,
+  virtualizeThreshold = 200,
 }: DataTableProps<T>) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -110,6 +113,23 @@ export function DataTable<T>({
     overscan: virtualizeOptions?.overscan ?? 5,
     containerHeight: virtualizeOptions?.containerHeight ?? "600px",
   };
+
+  // Auto-virtualize for large datasets
+  const effectiveVirtualize = virtualize === true || (virtualize !== false && data.length > virtualizeThreshold);
+
+  // Deferred input: bundle data + pagination so they stay in sync
+  const tableInput = useMemo(() => ({
+    data,
+    pageIndex: currentPage ?? 1,
+    pageSize: pageSize ?? 10,
+    sortKey: sortKey ?? "",
+    sortDirection: sortDirection ?? "asc",
+  }), [data, currentPage, pageSize, sortKey, sortDirection]);
+
+  const deferredInput = useDeferredValue(tableInput);
+  const isProcessing = tableInput !== deferredInput;
+  const deferredData = deferredInput.data as T[];
+  const showLoader = loading || isProcessing;
 
   // ── Map Column<T> to ColumnDef<T> ──────────────────────────────
   const reactColumns = useMemo<ColumnDef<T>[]>(() => {
@@ -243,20 +263,24 @@ export function DataTable<T>({
   // ── React Table ────────────────────────────────────────────────
   const enableRowSelection = selectable || undefined;
 
+
+  // Detect pre-paginated data (page already sliced before passing to DataTable)
+  const isPrePaginated = paginated && data.length < (totalItems ?? data.length);
+
   const table = useReactTable({
-    data,
+    data: deferredData,
     columns: reactColumns,
     state: {
       sorting,
       rowSelection,
-      pagination: paginationState,
+      ...(isPrePaginated ? {} : { pagination: paginationState }),
     },
     onSortingChange,
     onRowSelectionChange,
-    onPaginationChange,
+    ...(isPrePaginated ? {} : { onPaginationChange }),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(isPrePaginated ? {} : { getPaginationRowModel: getPaginationRowModel() }),
     enableRowSelection,
   });
 
@@ -264,7 +288,7 @@ export function DataTable<T>({
 
   // ── Virtualizer ────────────────────────────────────────────────
   const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
-    count: virtualize ? tableRows.length : 0,
+    count: effectiveVirtualize ? tableRows.length : 0,
     estimateSize: () => vOpts.estimateSize,
     getScrollElement: () => tableContainerRef.current,
     measureElement:
@@ -273,7 +297,7 @@ export function DataTable<T>({
         ? (element) => element?.getBoundingClientRect().height
         : undefined,
     overscan: vOpts.overscan,
-    enabled: virtualize,
+    enabled: effectiveVirtualize,
   });
 
   // ── Helpers ────────────────────────────────────────────────────
@@ -366,26 +390,28 @@ export function DataTable<T>({
   // The existing structure already handles this via pagination footer.
 
   // ── Empty state ────────────────────────────────────────────────
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
+  // Loading overlay shared component
+  const LoadingOverlay = showLoader ? (
+    <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[1px] rounded-lg">
+      <div className="flex flex-col items-center gap-2">
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-        <span className="ml-2 text-sm text-muted">Loading...</span>
+        <span className="text-xs text-muted">読み込み中...</span>
       </div>
-    );
-  }
+    </div>
+  ) : null;
 
   const totalColumns = colDefs.length + extraColCount;
 
   // ════════════════════════════════════════════════════════════════
   // VIRTUALIZED MODE
   // ════════════════════════════════════════════════════════════════
-  if (virtualize) {
+  if (effectiveVirtualize) {
     const virtualRows = rowVirtualizer.getVirtualItems();
     const totalSize = rowVirtualizer.getTotalSize();
 
     return (
-      <div className="data-table-wrapper w-full overflow-x-auto">
+      <div className="data-table-wrapper w-full overflow-x-auto" style={{ position: "relative" }}>
+        {LoadingOverlay}
         <div
           ref={tableContainerRef}
           className="overflow-auto border border-border rounded-lg shadow-sm"
@@ -599,7 +625,8 @@ export function DataTable<T>({
   // Pagination sits outside the scroll container so it stays fixed.
   // ════════════════════════════════════════════════════════════════
   return (
-    <div className="data-table-wrapper">
+    <div className="data-table-wrapper" style={{ position: "relative" }}>
+      {LoadingOverlay}
       <div
         className="w-full border border-border rounded-lg shadow-sm"
         style={{

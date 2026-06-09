@@ -29,8 +29,8 @@ const statuses = ["保管中", "処理中", "出庫済", "異常"];
 const generateData = (): HokanRecord[] => {
   const records: HokanRecord[] = [];
   for (let i = 1; i <= 200; i++) {
-    const qty = Math.floor(Math.random() * 100) + 10;
-    const unit = (Math.floor(Math.random() * 5000) + 500) * 10;
+    const qty = ((i * 37 + 5) % 100) + 10;
+    const unit = (((i * 91 + 300) % 5000) + 500) * 10;
     records.push({
       id: `HK${String(i).padStart(5, "0")}`,
       storeName: storeNames[i % storeNames.length],
