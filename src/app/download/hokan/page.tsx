@@ -95,13 +95,13 @@ export default function HokanDownloadPage() {
   };
 
   const columns: Column<HokanRecord>[] = [
-    { key: "storeName", label: "店铺", width: "120px" },
+    { key: "storeName", label: "店铺" },
     { key: "productName", label: "商品名" },
-    { key: "category", label: "カテゴリ", width: "90px" },
-    { key: "quantity", label: "数量", width: "70px", align: "right" },
-    { key: "totalAmount", label: "金額", width: "120px", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.totalAmount)}</span> },
-    { key: "holdingDate", label: "保管日", width: "100px" },
-    { key: "status", label: "状態", width: "80px", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
+    { key: "category", label: "カテゴリ" },
+    { key: "quantity", label: "数量", align: "right" },
+    { key: "totalAmount", label: "金額", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.totalAmount)}</span> },
+    { key: "holdingDate", label: "保管日" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
   ];
 
   return (

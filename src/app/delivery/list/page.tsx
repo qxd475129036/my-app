@@ -75,16 +75,16 @@ export default function DeliveryListPage() {
   }, [filtered, currentPage, pageSize]);
 
   const columns: Column<DeliveryOrder>[] = [
-    { key: "orderNumber", label: "注文番号", width: "140px" },
-    { key: "storeName", label: "店铺", width: "120px" },
+    { key: "orderNumber", label: "注文番号" },
+    { key: "storeName", label: "店铺" },
     { key: "productName", label: "商品名" },
-    { key: "amount", label: "金額", width: "100px", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
-    { key: "customerName", label: "顧客", width: "100px" },
-    { key: "customerAddress", label: "住所", width: "150px" },
-    { key: "createdAt", label: "作成日", width: "100px" },
-    { key: "status", label: "状態", width: "80px", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
+    { key: "amount", label: "金額", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
+    { key: "customerName", label: "顧客" },
+    { key: "customerAddress", label: "住所" },
+    { key: "createdAt", label: "作成日" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (r) => <button onClick={() => { setDetailRow(r); setDetailModalOpen(true); }} className="text-accent hover:text-accent-hover text-xs font-medium">詳細</button>,
     },
   ];

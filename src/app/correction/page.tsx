@@ -76,22 +76,22 @@ export default function CorrectionPage() {
   };
 
   const columns: Column<CorrectionRecord>[] = [
-    { key: "id", label: "ID", width: "80px" },
+    { key: "id", label: "ID" },
     { key: "itemName", label: "商品名" },
-    { key: "storeName", label: "店铺", width: "100px" },
-    { key: "oldPrice", label: "旧価格", width: "100px", align: "right", render: (r) => formatPrice(r.oldPrice) },
-    { key: "newPrice", label: "新価格", width: "100px", align: "right", render: (r) => <span className="font-semibold text-accent">{formatPrice(r.newPrice)}</span> },
+    { key: "storeName", label: "店铺" },
+    { key: "oldPrice", label: "旧価格", align: "right", render: (r) => formatPrice(r.oldPrice) },
+    { key: "newPrice", label: "新価格", align: "right", render: (r) => <span className="font-semibold text-accent">{formatPrice(r.newPrice)}</span> },
     {
-      key: "diff", label: "差分", width: "80px", align: "right",
+      key: "diff", label: "差分", align: "right",
       render: (r) => {
         const diff = r.newPrice - r.oldPrice;
         return <span className={diff > 0 ? "text-danger font-medium" : diff < 0 ? "text-success font-medium" : "text-muted"}>{diff > 0 ? "+" : ""}{diff.toLocaleString()}</span>;
       },
     },
-    { key: "reason", label: "理由", width: "120px" },
-    { key: "status", label: "状態", width: "80px", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
+    { key: "reason", label: "理由" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (r) => <button onClick={() => openEdit(r)} className="text-accent hover:text-accent-hover text-xs font-medium">編集</button>,
     },
   ];

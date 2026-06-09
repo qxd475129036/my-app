@@ -45,14 +45,13 @@ export default function DashboardPage() {
 
   const columns = useMemo(
     () => [
-      { key: "user", label: "ユーザー", width: "120px" },
-      { key: "action", label: "操作", width: "140px" },
+      { key: "user", label: "ユーザー" },
+      { key: "action", label: "操作" },
       { key: "target", label: "対象" },
-      { key: "time", label: "時刻", width: "80px" },
+      { key: "time", label: "時刻" },
       {
         key: "status",
         label: "状態",
-        width: "100px",
         render: (row: RecentActivity) => {
           const colors: Record<string, string> = {
             completed: "bg-green-50 text-green-700",

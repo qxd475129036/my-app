@@ -108,18 +108,18 @@ export default function ApprovalPage() {
   };
 
   const columns: Column<ApprovalRecord>[] = [
-    { key: "approvalNo", label: "番号", width: "140px" },
-    { key: "storeName", label: "店铺名", width: "120px" },
+    { key: "approvalNo", label: "番号" },
+    { key: "storeName", label: "店铺名" },
     {
-      key: "approvalTypeName", label: "種類", width: "90px",
+      key: "approvalTypeName", label: "種類",
       render: (r) => <span className="inline-flex items-center rounded bg-accent-light text-accent px-2 py-0.5 text-xs font-medium">{r.approvalTypeName}</span>,
     },
     { key: "targetName", label: "対象" },
-    { key: "applicantName", label: "申請者", width: "90px" },
-    { key: "amount", label: "金額", width: "100px", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
-    { key: "submittedDate", label: "申請日", width: "100px" },
+    { key: "applicantName", label: "申請者" },
+    { key: "amount", label: "金額", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
+    { key: "submittedDate", label: "申請日" },
     {
-      key: "status", label: "状態", width: "80px",
+      key: "status", label: "状態",
       render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} />,
     },
   ];

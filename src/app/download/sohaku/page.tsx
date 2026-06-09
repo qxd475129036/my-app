@@ -95,13 +95,13 @@ export default function SohakuDownloadPage() {
   }, [filtered, currentPage, pageSize]);
 
   const columns: Column<SohakuRecord>[] = [
-    { key: "orderNo", label: "注文番号", width: "130px" },
-    { key: "storeName", label: "店铺", width: "120px" },
+    { key: "orderNo", label: "注文番号" },
+    { key: "storeName", label: "店铺" },
     { key: "productName", label: "商品名" },
-    { key: "quantity", label: "数量", width: "60px", align: "right" },
-    { key: "totalAmount", label: "金額", width: "110px", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.totalAmount)}</span> },
-    { key: "deliveryDate", label: "配送日", width: "100px" },
-    { key: "status", label: "状態", width: "80px", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
+    { key: "quantity", label: "数量", align: "right" },
+    { key: "totalAmount", label: "金額", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.totalAmount)}</span> },
+    { key: "deliveryDate", label: "配送日" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
   ];
 
   return (

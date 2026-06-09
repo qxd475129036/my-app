@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计提案 v8</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;color:#1e293b;padding:24px;max-width:1100px;margin:0 auto}
+h2{font-size:22px;margin-bottom:4px}
+.subtitle{color:#64748b;font-size:13px;margin-bottom:20px}
+h3{font-size:16px;margin:20px 0 10px;color:#1e293b;padding-bottom:6px;border-bottom:2px solid #e2e8f0}
+
+.layout-preview{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden}
+.layout-topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#fafbfc}
+.layout-topbar .ttl{font-size:16px;font-weight:700}
+.layout-topbar .acts{display:flex;gap:8px}
+.btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid transparent}
+.btn-primary{background:#1d4ed8;color:#fff}
+.btn-outline{background:#fff;color:#1e293b;border-color:#d1d5db}
+.layout-body{padding:16px}
+
+.next-deposit{background:linear-gradient(135deg,#ede9fe,#faf5ff);border:2px solid #c4b5fd;border-radius:12px;padding:14px 20px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.next-deposit .nd-left{display:flex;align-items:center;gap:16px}
+.next-deposit .nd-icon{font-size:28px}
+.next-deposit .nd-label{font-size:11px;color:#6b7280;margin-bottom:4px}
+.next-deposit .nd-dates{display:flex;align-items:center;gap:8px}
+.next-deposit .nd-date-box{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-weight:800;font-size:20px}
+.next-deposit .nd-date-box.jp-banner{background:#fff;color:#1d4ed8;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.next-deposit .nd-date-box.sg-banner{background:#fff;color:#d97706;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.next-deposit .nd-date-box .nd-dt-label{font-size:10px;font-weight:600;opacity:.7}
+.next-deposit .nd-divider{color:#a78bfa;font-size:16px;font-weight:300}
+.next-deposit .nd-meta{font-size:10px;color:#6b7280;margin-top:2px}
+.next-deposit .nd-right{text-align:right}
+.next-deposit .nd-right .nd-countdown{font-size:24px;font-weight:800;color:#7c3aed}
+
+.year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.month-card{border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
+.month-card .mh{padding:7px 10px;font-size:13px;font-weight:700;color:#fff}
+.month-card.jan .mh{background:#6366f1}
+.month-card.feb .mh{background:#8b5cf6}
+.month-card.mar .mh{background:#a855f7}
+.month-card .mc-body{padding:8px}
+
+.entry-row{display:flex;align-items:center;gap:8px;padding:8px;margin-bottom:4px;border-radius:8px;font-size:11px;cursor:pointer;transition:all .15s;justify-content:space-between;background:#f8fafc;border:1px solid #e2e8f0}
+.entry-row:hover{background:#f1f5f9;border-color:#cbd5e1}
+.entry-row.next{border-color:#6366f1!important;box-shadow:0 0 0 2px rgba(99,102,241,.2);background:#eef2ff}
+
+.entry-row .left{display:flex;align-items:center;gap:10px}
+.entry-row .deposit-duo{display:flex;align-items:center;gap:4px}
+.entry-row .deposit-box{display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:5px;font-weight:700;font-size:13px}
+.entry-row .deposit-box.jp-box{background:#dbeafe;color:#1d4ed8}
+.entry-row .deposit-box.sg-box{background:#fef3c7;color:#d97706}
+.entry-row .deposit-divider{color:#cbd5e1;font-size:10px}
+
+.entry-row .derived-dates{display:flex;gap:8px;font-size:10px;color:#64748b}
+.entry-row .derived-dates span{white-space:nowrap}
+.entry-row .derived-dates .dd-label{color:#94a3b8}
+.entry-row .derived-dates .dd-val{font-weight:600;color:#475569}
+
+.process-btns{display:flex;gap:4px;flex-shrink:0}
+.pbtn{font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid #d1d5db;cursor:pointer;background:#fff;white-space:nowrap}
+.pbtn.done{color:#fff;border-color:transparent}
+.pbtn.pending{color:#64748b}
+.pbtn.jp-done{background:#3b82f6;border-color:#3b82f6}
+.pbtn.sg-done{background:#f59e0b;border-color:#f59e0b}
+
+.edit-modal-preview{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:16px;max-width:440px;margin-top:10px}
+.edit-modal-preview .modal-hdr{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between}
+.edit-modal-preview .field-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.edit-modal-preview .field-row label{font-size:11px;color:#64748b;width:80px;text-align:right}
+.edit-modal-preview .field-row input{flex:1;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;max-width:100px}
+.edit-modal-preview .field-row .hint{font-size:10px;color:#94a3b8;width:50px}
+.edit-modal-preview .modal-acts{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;padding-top:10px;border-top:1px solid #f1f5f9}
+
+.options{display:flex;gap:12px;margin-top:12px}
+.opt{flex:1;display:flex;align-items:flex-start;gap:10px;padding:10px;border:2px solid #e2e8f0;border-radius:10px;cursor:pointer}
+.opt:hover{border-color:#93c5fd;background:#eff6ff}
+.opt .let{width:26px;height:26px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0}
+.opt .ct h3{font-size:12px;margin-bottom:2px}
+
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.4)}50%{box-shadow:0 0 0 4px rgba(99,102,241,0)}}
+
+.tag{display:inline-block;padding:1px 4px;border-radius:3px;font-size:9px;font-weight:600}
+.tag.jpt{background:#dbeafe;color:#1d4ed8}
+</style>
+</head>
+<body>
+
+<h2>配送日历 设计提案 v8</h2>
+<p class="subtitle">横幅背景改为淡紫色，JP/佐川日期卡片用白底突出</p>
+
+<div class="layout-preview">
+<div class="layout-topbar">
+<div><div class="ttl">配送日历</div><div style="font-size:11px;color:#64748b">入金・締日・支付のスケジュール管理</div></div>
+<div class="acts">
+<select style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px"><option>2026年</option></select>
+<button class="btn btn-outline">📝 修正</button>
+<button class="btn btn-primary">✨ 新規作成</button>
+</div>
+</div>
+<div class="layout-body">
+
+<div class="next-deposit">
+<div class="nd-left">
+<div class="nd-icon">📅</div>
+<div>
+<div class="nd-label">次回入金日</div>
+<div class="nd-dates">
+<div class="nd-date-box jp-banner"><span class="nd-dt-label">JP</span>15</div>
+<div class="nd-divider">·</div>
+<div class="nd-date-box sg-banner"><span class="nd-dt-label">佐川</span>12</div>
+</div>
+<div class="nd-meta">締日 6/10 · 支付预定日 6/30</div>
+</div>
+</div>
+<div class="nd-right">
+<div style="font-size:11px;color:#6b7280">残り</div>
+<div class="nd-countdown">6<span style="font-size:14px">日</span></div>
+</div>
+</div>
+
+<div class="year-grid">
+<div class="month-card jan"><div class="mh">1月</div><div class="mc-body">
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">15</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">12</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">10</span><span class="dd-label">支</span><span class="dd-val">31</span></div></div><div class="process-btns"><span class="pbtn jp-done done">JP ✓</span><span class="pbtn sg-done done">佐川 ✓</span></div></div>
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">27</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">25</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">25</span><span class="dd-label">支</span><span class="dd-val">2/28</span></div></div><div class="process-btns"><span class="pbtn jp-done done">JP ✓</span><span class="pbtn sg-done done">佐川 ✓</span></div></div>
+</div></div>
+
+<div class="month-card feb"><div class="mh">2月</div><div class="mc-body">
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">15</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">12</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">10</span><span class="dd-label">支</span><span class="dd-val">28</span></div></div><div class="process-btns"><span class="pbtn jp-done done">JP ✓</span><span class="pbtn sg-done done">佐川 ✓</span></div></div>
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box" style="background:#fef9c3;color:#b45309">JP<span style="font-size:15px;margin-left:2px">3/1</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">25</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">25</span><span class="dd-label">支</span><span class="dd-val">3/31</span></div></div><div class="process-btns"><span class="pbtn pending">JP</span><span class="pbtn pending">佐川</span></div></div>
+</div></div>
+
+<div class="month-card mar"><div class="mh">3月</div><div class="mc-body">
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">15</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">12</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">10</span><span class="dd-label">支</span><span class="dd-val">31</span></div></div><div class="process-btns"><span class="pbtn jp-done done">JP ✓</span><span class="pbtn pending">佐川</span></div></div>
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">27</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">25</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">25</span><span class="dd-label">支</span><span class="dd-val">4/30</span></div></div><div class="process-btns"><span class="pbtn pending">JP</span><span class="pbtn pending">佐川</span></div></div>
+</div></div>
+
+<div class="month-card" style="border-color:#6366f1;box-shadow:0 0 0 2px rgba(99,102,241,.15)"><div class="mh" style="background:#6366f1">6月</div><div class="mc-body">
+<div class="entry-row next pulse"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box" style="font-size:14px">JP<span style="font-size:18px;margin-left:3px;font-weight:800">15</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">12</span></div></div><span class="tag jpt">← 次回</span><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">10</span><span class="dd-label">支</span><span class="dd-val">30</span></div></div><div class="process-btns"><span class="pbtn pending">JP</span><span class="pbtn pending">佐川</span></div></div>
+<div class="entry-row"><div class="left"><div class="deposit-duo"><div class="deposit-box jp-box">JP<span style="font-size:15px;margin-left:2px">27</span></div><span class="deposit-divider">·</span><div class="deposit-box sg-box">佐川<span style="font-size:15px;margin-left:2px">25</span></div></div><div class="derived-dates"><span class="dd-label">締</span><span class="dd-val">25</span><span class="dd-label">支</span><span class="dd-val">7/31</span></div></div><div class="process-btns"><span class="pbtn pending">JP</span><span class="pbtn pending">佐川</span></div></div>
+</div></div>
+</div>
+</div>
+</div>
+
+<h3>编辑弹窗</h3>
+<div class="edit-modal-preview">
+<div class="modal-hdr"><span>📅 日程編集 — 2月②</span><span style="cursor:pointer;color:#94a3b8">✕</span></div>
+<div class="field-row"><label>JP入金日</label><input type="text" value="3/1" style="font-weight:700;background:#fef9c3"><span class="hint">月/日</span></div>
+<div class="field-row"><label>佐川入金日</label><input type="text" value="25"><span class="hint">日</span></div>
+<div class="field-row"><label>締日</label><input type="text" value="25"><span class="hint">日</span></div>
+<div class="field-row"><label>支付预定日</label><input type="text" value="3/31"><span class="hint">月/日</span></div>
+<div class="modal-acts"><button class="btn btn-outline">取消</button><button class="btn btn-primary">保存</button></div>
+</div>
+
+<div style="margin-top:20px">
+<h3>✅ 可以开始做了吗？</h3>
+<div style="display:flex;gap:12px;margin-top:12px">
+<div class="opt" onclick="this.style.borderColor='#16a34a';this.style.background='#f0fdf4'"><div class="let" style="background:#16a34a;color:#fff">✓</div><div class="ct"><h3>可以，按这个做</h3></div></div>
+<div class="opt" onclick="this.style.borderColor='#dc2626';this.style.background='#fef2f2'"><div class="let" style="background:#dc2626;color:#fff">✗</div><div class="ct"><h3>需要调整</h3></div></div>
+</div>
+</div>
+
+</body></html>

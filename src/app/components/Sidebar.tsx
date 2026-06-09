@@ -58,6 +58,7 @@ const navItems: NavItem[] = [
     ],
   },
   { name: "明细修正", icon: "🔧", href: "/correction" },
+  { name: "Test DataTable", icon: "🧪", href: "/test/datatable" },
 ];
 
 export interface SidebarProps {

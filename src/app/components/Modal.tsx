@@ -7,7 +7,7 @@ export interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
 export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalProps) {
@@ -35,6 +35,7 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
     sm: "max-w-sm",
     md: "max-w-lg",
     lg: "max-w-2xl",
+    "2xl": "max-w-6xl",
     xl: "max-w-4xl",
   }[size];
 

@@ -106,15 +106,15 @@ export default function PricePage() {
   };
 
   const columns: Column<Price>[] = [
-    { key: "priceId", label: "価格ID", width: "110px" },
+    { key: "priceId", label: "価格ID" },
     { key: "productName", label: "商品名" },
-    { key: "category", label: "カテゴリ", width: "90px" },
-    { key: "price", label: "価格", width: "130px", align: "right", render: (row) => <span className="font-medium">{formatPrice(row.price)}</span> },
-    { key: "validFrom", label: "有効開始日", width: "110px" },
-    { key: "validTo", label: "有効終了日", width: "110px" },
-    { key: "status", label: "状態", width: "90px", render: (row) => <StatusBadge label={row.status} variant={statusVariant(row.status)} /> },
+    { key: "category", label: "カテゴリ" },
+    { key: "price", label: "価格", align: "right", render: (row) => <span className="font-medium">{formatPrice(row.price)}</span> },
+    { key: "validFrom", label: "有効開始日" },
+    { key: "validTo", label: "有効終了日" },
+    { key: "status", label: "状態", render: (row) => <StatusBadge label={row.status} variant={statusVariant(row.status)} /> },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (row) => <button onClick={() => openEdit(row)} className="text-accent hover:text-accent-hover text-xs font-medium">編集</button>,
     },
   ];

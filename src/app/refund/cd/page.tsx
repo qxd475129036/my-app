@@ -101,16 +101,16 @@ export default function RefundCdPage() {
   };
 
   const columns: Column<CdDefinition>[] = [
-    { key: "cdCode", label: "CDコード", width: "130px" },
+    { key: "cdCode", label: "CDコード" },
     { key: "cdName", label: "CD名" },
-    { key: "cdType", label: "種別", width: "90px", render: (r) => <span className="inline-flex items-center rounded bg-accent-light text-accent px-2 py-0.5 text-xs font-medium">{r.cdType}</span> },
-    { key: "usageCount", label: "使用回数", width: "90px", align: "right" },
-    { key: "maxUsage", label: "上限", width: "70px", align: "right" },
-    { key: "validFrom", label: "有効開始", width: "100px" },
-    { key: "validTo", label: "有効終了", width: "100px" },
-    { key: "status", label: "状態", width: "70px", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
+    { key: "cdType", label: "種別", render: (r) => <span className="inline-flex items-center rounded bg-accent-light text-accent px-2 py-0.5 text-xs font-medium">{r.cdType}</span> },
+    { key: "usageCount", label: "使用回数", align: "right" },
+    { key: "maxUsage", label: "上限", align: "right" },
+    { key: "validFrom", label: "有効開始" },
+    { key: "validTo", label: "有効終了" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={r.status} variant={statusVariant(r.status)} /> },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (r) => <button onClick={() => openEdit(r)} className="text-accent hover:text-accent-hover text-xs font-medium">編集</button>,
     },
   ];

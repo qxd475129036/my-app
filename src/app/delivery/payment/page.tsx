@@ -86,18 +86,18 @@ export default function PaymentPage() {
   }, [filtered, currentPage, pageSize]);
 
   const columns: Column<PaymentRecord>[] = [
-    { key: "paymentNumber", label: "出金番号", width: "140px" },
-    { key: "orderNumber", label: "注文番号", width: "130px" },
-    { key: "storeName", label: "店铺", width: "120px" },
-    { key: "amount", label: "金額", width: "100px", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
+    { key: "paymentNumber", label: "出金番号" },
+    { key: "orderNumber", label: "注文番号" },
+    { key: "storeName", label: "店铺" },
+    { key: "amount", label: "金額", align: "right", render: (r) => <span className="font-medium">{formatPrice(r.amount)}</span> },
     {
-      key: "paymentMethod", label: "支払方法", width: "110px",
+      key: "paymentMethod", label: "支払方法",
       render: (r) => <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${methodColor[r.paymentMethod]}`}>{methodLabel[r.paymentMethod]}</span>,
     },
-    { key: "withdrawalDate", label: "出金日", width: "100px" },
-    { key: "status", label: "状態", width: "80px", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
+    { key: "withdrawalDate", label: "出金日" },
+    { key: "status", label: "状態", render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} /> },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (r) => <button onClick={() => { setDetailRow(r); setDetailModalOpen(true); }} className="text-accent hover:text-accent-hover text-xs font-medium">詳細</button>,
     },
   ];

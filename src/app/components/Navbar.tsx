@@ -59,6 +59,7 @@ export function Navbar() {
       ],
     },
     { name: "明细修正", href: "/correction" },
+
     { name: "Login", href: "/login" },
   ];
 
@@ -111,7 +112,7 @@ export function Navbar() {
             <Link href="/dashboard" className="text-xl font-bold text-foreground">
               MyApp
             </Link>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 ">
               {navLinks.map((link) => {
                 if (link.href === "/login" && status === "authenticated") {
                   return null;

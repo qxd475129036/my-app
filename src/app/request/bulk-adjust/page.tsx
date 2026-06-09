@@ -87,22 +87,22 @@ export default function BulkAdjustPage() {
   };
 
   const columns: Column<BulkAdjustRecord>[] = [
-    { key: "adjustmentNo", label: "修正番号", width: "140px" },
-    { key: "storeName", label: "店铺名", width: "120px" },
+    { key: "adjustmentNo", label: "修正番号" },
+    { key: "storeName", label: "店铺名" },
     { key: "productName", label: "商品名" },
-    { key: "oldPrice", label: "旧価格", width: "100px", align: "right", render: (r) => formatPrice(r.oldPrice) },
-    { key: "newPrice", label: "新価格", width: "100px", align: "right", render: (r) => <span className="font-semibold text-accent">{formatPrice(r.newPrice)}</span> },
+    { key: "oldPrice", label: "旧価格", align: "right", render: (r) => formatPrice(r.oldPrice) },
+    { key: "newPrice", label: "新価格", align: "right", render: (r) => <span className="font-semibold text-accent">{formatPrice(r.newPrice)}</span> },
     {
-      key: "priceChange", label: "差額", width: "80px", align: "right",
+      key: "priceChange", label: "差額", align: "right",
       render: (r) => {
         const c = r.priceChange;
         return <span className={c > 0 ? "text-danger" : c < 0 ? "text-success" : "text-muted"}>{c > 0 ? "+" : ""}{c.toLocaleString()}</span>;
       },
     },
-    { key: "reason", label: "理由", width: "140px" },
-    { key: "requestedBy", label: "申請者", width: "100px" },
+    { key: "reason", label: "理由" },
+    { key: "requestedBy", label: "申請者" },
     {
-      key: "status", label: "状態", width: "80px",
+      key: "status", label: "状態",
       render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} />,
     },
   ];

@@ -97,25 +97,25 @@ export default function MetadataPage() {
   const catMap: Record<string, string> = { price: "価格管理", inventory: "在庫管理", discount: "割引規則", shipping: "配送規則", tax: "税率設定" };
 
   const columns: Column<MetadataRecord>[] = [
-    { key: "metadataNo", label: "番号", width: "130px" },
+    { key: "metadataNo", label: "番号" },
     {
-      key: "categoryName", label: "カテゴリ", width: "100px",
+      key: "categoryName", label: "カテゴリ",
       render: (r) => <span className="inline-flex items-center rounded bg-accent-light text-accent px-2 py-0.5 text-xs font-medium">{r.categoryName}</span>,
     },
     { key: "itemName", label: "項目名" },
-    { key: "itemCode", label: "コード", width: "140px" },
-    { key: "defaultValue", label: "初期値", width: "100px" },
-    { key: "displayOrder", label: "順序", width: "60px", align: "center" },
+    { key: "itemCode", label: "コード" },
+    { key: "defaultValue", label: "初期値" },
+    { key: "displayOrder", label: "順序", align: "center" },
     {
-      key: "isMandatory", label: "必須", width: "60px", align: "center",
+      key: "isMandatory", label: "必須", align: "center",
       render: (r) => r.isMandatory ? <span className="text-xs text-danger font-medium">必須</span> : <span className="text-xs text-muted">任意</span>,
     },
     {
-      key: "status", label: "状態", width: "70px",
+      key: "status", label: "状態",
       render: (r) => <StatusBadge label={statusLabel[r.status]} variant={statusVariant(r.status)} />,
     },
     {
-      key: "actions", label: "操作", width: "60px",
+      key: "actions", label: "操作",
       render: (r) => <button onClick={() => openEdit(r)} className="text-accent hover:text-accent-hover text-xs font-medium">編集</button>,
     },
   ];
