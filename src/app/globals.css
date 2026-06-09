@@ -5,7 +5,7 @@
 /* ============================================
    Environment Theme System
    Switched via html[data-env="local|dev|stg|prd"]
-   Only affects sidebar gradient + text colors.
+   Affects sidebar: gradient bg, text, group-active, page-active.
    All component colors (buttons, links, etc.) stay blue.
    ============================================ */
 
@@ -31,32 +31,52 @@
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
 
   /* Default: local (green) */
-  --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
-  --env-sidebar-muted: #bbf7d0;
+  --env-gradient: linear-gradient(160deg, #15803d 0%, #0f766e 50%, #0e7490 100%);
+  --env-sidebar-muted: #6ee7b7;
+  --env-page-active-bg: #ffffff;
+  --env-page-active-text: #14532d;
+  --env-group-active-bg: rgba(255,255,255,0.10);
+  --env-group-active-text: #ffffff;
 }
 
 /* ---- local (green) ---- */
 html[data-env="local"] {
-  --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
-  --env-sidebar-muted: #bbf7d0;
+  --env-gradient: linear-gradient(160deg, #15803d 0%, #0f766e 50%, #0e7490 100%);
+  --env-sidebar-muted: #6ee7b7;
+  --env-page-active-bg: #ffffff;
+  --env-page-active-text: #14532d;
+  --env-group-active-bg: rgba(255,255,255,0.10);
+  --env-group-active-text: #ffffff;
 }
 
 /* ---- dev (yellow/amber) ---- */
 html[data-env="dev"] {
-  --env-gradient: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
-  --env-sidebar-muted: #fef3c7;
+  --env-gradient: linear-gradient(160deg, #b45309 0%, #d97706 40%, #ea580c 100%);
+  --env-sidebar-muted: #fcd34d;
+  --env-page-active-bg: #ffffff;
+  --env-page-active-text: #78350f;
+  --env-group-active-bg: rgba(255,255,255,0.10);
+  --env-group-active-text: #ffffff;
 }
 
 /* ---- stg (purple) ---- */
 html[data-env="stg"] {
-  --env-gradient: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
-  --env-sidebar-muted: #ddd6fe;
+  --env-gradient: linear-gradient(160deg, #6d28d9 0%, #7c3aed 40%, #c026d3 100%);
+  --env-sidebar-muted: #c4b5fd;
+  --env-page-active-bg: #ffffff;
+  --env-page-active-text: #4c1d95;
+  --env-group-active-bg: rgba(255,255,255,0.10);
+  --env-group-active-text: #ffffff;
 }
 
 /* ---- prd (light blue) ---- */
 html[data-env="prd"] {
-  --env-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
-  --env-sidebar-muted: #bae6fd;
+  --env-gradient: linear-gradient(160deg, #0369a1 0%, #0284c7 40%, #6366f1 100%);
+  --env-sidebar-muted: #7dd3fc;
+  --env-page-active-bg: #ffffff;
+  --env-page-active-text: #0c4a6e;
+  --env-group-active-bg: rgba(255,255,255,0.10);
+  --env-group-active-text: #ffffff;
 }
 
 @theme inline {

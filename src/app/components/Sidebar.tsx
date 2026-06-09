@@ -78,6 +78,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     return pathname === href || pathname.startsWith(href + "/");
   };
 
+  const groupActive = (item: NavItem) => {
+    if (!item.children) return false;
+    return item.children.some((c) => isActive(c.href));
+  };
+
   const toggleGroup = (name: string) => {
     setExpandedGroups((prev) => {
       const next = new Set(prev);
@@ -129,6 +134,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           const active = isActive(item.href);
           const hasChildren = !!item.children;
           const expanded = expandedGroups.has(item.name);
+          const isGroupActive = groupActive(item);
 
           return (
             <div key={item.name}>
@@ -137,8 +143,8 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   <button
                     onClick={() => toggleGroup(item.name)}
                     className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-[#2563eb] text-white"
+                      isGroupActive
+                        ? "bg-[var(--env-group-active-bg)] text-[var(--env-group-active-text)]"
                         : `${mutedText} hover:bg-white/10 hover:text-white`
                     }`}
                   >
@@ -174,7 +180,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                             href={child.href}
                             className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
                               childActive
-                                ? "bg-[#2563eb]/20 text-[#2563eb] font-medium"
+                                ? "bg-[var(--env-page-active-bg)] text-[var(--env-page-active-text)] font-semibold"
                                 : `${mutedText} hover:text-white hover:bg-white/5`
                             }`}
                           >
@@ -190,7 +196,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   href={item.href || "#"}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-[#2563eb] text-white"
+                      ? "bg-[var(--env-page-active-bg)] text-[var(--env-page-active-text)] font-semibold"
                       : `${mutedText} hover:bg-white/10 hover:text-white`
                   }`}
                   title={collapsed ? item.name : undefined}
