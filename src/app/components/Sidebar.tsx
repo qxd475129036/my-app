@@ -87,6 +87,8 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     });
   };
 
+  const mutedText = "text-[var(--env-sidebar-muted)]";
+
   return (
     <aside
       style={{ background: "var(--env-gradient)" }}
@@ -103,7 +105,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         )}
         <button
           onClick={onToggle}
-          className="rounded-lg p-1.5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+          className={`rounded-lg p-1.5 ${mutedText} hover:text-white hover:bg-white/10 transition-colors`}
         >
           <svg
             className={`h-5 w-5 transition-transform ${collapsed ? "rotate-180" : ""}`}
@@ -137,7 +139,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       active
                         ? "bg-[#2563eb] text-white"
-                        : "text-slate-300 hover:bg-white/10 hover:text-white"
+                        : `${mutedText} hover:bg-white/10 hover:text-white`
                     }`}
                   >
                     <span className="text-base flex-shrink-0">{item.icon}</span>
@@ -173,7 +175,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                             className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
                               childActive
                                 ? "bg-[#2563eb]/20 text-[#2563eb] font-medium"
-                                : "text-slate-400 hover:text-white hover:bg-white/5"
+                                : `${mutedText} hover:text-white hover:bg-white/5`
                             }`}
                           >
                             {child.name}
@@ -189,7 +191,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                     active
                       ? "bg-[#2563eb] text-white"
-                      : "text-slate-300 hover:bg-white/10 hover:text-white"
+                      : `${mutedText} hover:bg-white/10 hover:text-white`
                   }`}
                   title={collapsed ? item.name : undefined}
                 >
@@ -216,7 +218,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 </p>
                 <button
                   onClick={() => signOut({ callbackUrl: "/login" })}
-                  className="text-xs text-slate-400 hover:text-white transition-colors"
+                  className={`text-xs ${mutedText} hover:text-white transition-colors`}
                 >
                   ログアウト
                 </button>

@@ -5,7 +5,7 @@
 /* ============================================
    Environment Theme System
    Switched via html[data-env="local|dev|stg|prd"]
-   Only affects sidebar background gradient.
+   Only affects sidebar gradient + text colors.
    All component colors (buttons, links, etc.) stay blue.
    ============================================ */
 
@@ -30,28 +30,33 @@
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
 
-  /* Default: local (green) sidebar gradient */
+  /* Default: local (green) */
   --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
+  --env-sidebar-muted: #bbf7d0;
 }
 
 /* ---- local (green) ---- */
 html[data-env="local"] {
   --env-gradient: linear-gradient(135deg, #16a34a 0%, #0d9488 100%);
+  --env-sidebar-muted: #bbf7d0;
 }
 
 /* ---- dev (yellow/amber) ---- */
 html[data-env="dev"] {
   --env-gradient: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+  --env-sidebar-muted: #fef3c7;
 }
 
 /* ---- stg (purple) ---- */
 html[data-env="stg"] {
   --env-gradient: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  --env-sidebar-muted: #ddd6fe;
 }
 
 /* ---- prd (light blue) ---- */
 html[data-env="prd"] {
   --env-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  --env-sidebar-muted: #bae6fd;
 }
 
 @theme inline {
