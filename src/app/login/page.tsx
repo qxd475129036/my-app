@@ -39,8 +39,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left: Brand panel */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center bg-accent text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent to-accent-hover" />
+      <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center bg-[#2563eb] text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb] to-[#1d4ed8]" />
         <div className="relative z-10 text-center px-12">
           <div className="mb-6 inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-white/20 backdrop-blur-sm">
             <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,21 +48,21 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="text-4xl font-bold tracking-tight mb-3">MyApp</h1>
-          <p className="text-lg text-white/70 max-w-sm mx-auto">
+          <p className="text-lg text-blue-100 max-w-sm mx-auto">
             業務管理システム — マスタデータ管理、請求処理、代引業務を一元管理
           </p>
           <div className="mt-12 grid grid-cols-3 gap-6 max-w-sm mx-auto">
             <div className="text-center">
               <div className="text-2xl font-bold">27+</div>
-              <div className="text-xs text-white/50 mt-1">機能モジュール</div>
+              <div className="text-xs text-blue-200 mt-1">機能モジュール</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">99.9%</div>
-              <div className="text-xs text-white/50 mt-1">稼働率</div>
+              <div className="text-xs text-blue-200 mt-1">稼働率</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">24/7</div>
-              <div className="text-xs text-white/50 mt-1">サポート</div>
+              <div className="text-xs text-blue-200 mt-1">サポート</div>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-6 py-12 lg:px-12">
         <div className="w-full max-w-sm">
           <div className="lg:hidden mb-10 text-center">
-            <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-accent text-white mb-4">
+            <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-[#2563eb] text-white mb-4">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>

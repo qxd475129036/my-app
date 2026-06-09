@@ -136,7 +136,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     onClick={() => toggleGroup(item.name)}
                     className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                       active
-                        ? "bg-accent text-white"
+                        ? "bg-[#2563eb] text-white"
                         : "text-slate-300 hover:bg-white/10 hover:text-white"
                     }`}
                   >
@@ -172,7 +172,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                             href={child.href}
                             className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
                               childActive
-                                ? "bg-accent/20 text-accent font-medium"
+                                ? "bg-[#2563eb]/20 text-[#2563eb] font-medium"
                                 : "text-slate-400 hover:text-white hover:bg-white/5"
                             }`}
                           >
@@ -188,7 +188,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                   href={item.href || "#"}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-accent text-white"
+                      ? "bg-[#2563eb] text-white"
                       : "text-slate-300 hover:bg-white/10 hover:text-white"
                   }`}
                   title={collapsed ? item.name : undefined}
@@ -206,7 +206,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="border-t border-white/10 p-4">
         {session?.user ? (
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-xs font-bold text-white flex-shrink-0">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white flex-shrink-0">
               {session.user.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
             {!collapsed && (
